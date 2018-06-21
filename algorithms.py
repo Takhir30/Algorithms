@@ -1,6 +1,11 @@
 import time
 import random
 
+def timer(function, array):
+    start_time = time.time()
+    function(array)
+    print(f'{function.__name__} - {time.time()-start_time}')
+
 
 def bubblesort(array):
     for j in range(len(array)-1, 0, -1):
@@ -44,28 +49,23 @@ def mergesort(array):
 
     return array
 
+
 def quicksort(array):
       if len(array) < 2:
           return array
 
       else:
           pivot = array[0]
-          less = [i for i in array[1:] if i <= pivot]
-          greater = [i for i in array[1:] if i > pivot]
-          return quicksort(less) + [pivot] + quicksort(greater)
+          less = quicksort([i for i in array[1:] if i <= pivot])
+          greater = quicksort([i for i in array[1:] if i > pivot])
+          return less + [pivot] + greater
 
 
-test_array = [random.randrange(10,10000) for _ in range(1000)]
+test_array = [random.randrange(10,2000) for _ in range(1000)]
 
 
-a = bubblesort(test_array)
+timer(bubblesort, test_array)
 
+timer(quicksort, test_array)
 
-b = quicksort(test_array)
-
-
-c = mergesort(test_array)
-
-
-if a == b == c:
-    print('yes')
+timer(mergesort, test_array)
